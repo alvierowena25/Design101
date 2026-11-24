@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typography — Design101!</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .media-card {
+      background: #FAF8F5;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-tactile);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .media-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      border: 2px solid var(--border-dark);
+      overflow: hidden;
+      background: var(--lavender-bg);
+    }
+    .media-frame img,
+    .media-frame iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 0;
+      display: block;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: #FFF;
+    }
+    .design-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .design-table th,
+    .design-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .design-table th {
+      background: var(--lavender-bg);
+      font-family: 'Fredoka', sans-serif;
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--border-dark);
+    }
+    .design-table tr:last-child td { border-bottom: none; }
+    @media (max-width: 768px) { .media-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="brand-logo" aria-label="Design101 Home">
+      <img
+        src="https://drive.google.com/thumbnail?id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN&sz=w400"
+        data-local="../assets/Logo Design101.jpeg"
+        data-fallback="https://drive.google.com/uc?export=view&id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN"
+        alt="Design101 Logo"
+        class="brand-logo-img"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="colour.html">Colour</a></li>
+      <li><a href="typography.html" class="active">Typography</a></li>
+      <li><a href="layout.html">Layout</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+    </ul>
+    <div class="nav-progress-pill">
+      <span>⭐</span>
+      <span><span id="completedCount">0</span>/4 Lessons</span>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="workspace-panel reveal">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--lavender-bg);">Lesson 3 of 4</span>
+          <h1 style="margin-top: 0.4rem;">Typography Pairing & Scale</h1>
+        </div>
+        <button type="button" class="btn btn-mint" onclick="Design101.markLessonComplete('typography')">✓ Mark Lesson Complete</button>
+      </div>
+
+      <p style="margin-bottom: 1.25rem;">
+        Great typography balances personality and clarity. Adjust the display typeface, headline size, and paragraph line height (leading) below.
+      </p>
+
+      <div class="split-studio" style="display: grid; grid-template-columns: 310px 1fr; gap: 1.5rem;">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="font-weight: 700; display: block; margin-bottom: 0.35rem;">Heading Typeface</label>
+            <select id="headingFontSelect" class="btn" style="width: 100%; background: #FFF;">
+              <option value="'Fredoka', sans-serif">Fredoka (Playful Rounded)</option>
+              <option value="'Playfair Display', serif">Playfair Display (Editorial Serif)</option>
+              <option value="'Space Mono', monospace">Space Mono (Tech Monospace)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-weight: 700;">Heading Size: <span id="sizeReadout">38</span>px</label>
+            <input type="range" id="sizeSlider" min="24" max="56" value="38" style="width: 100%;" />
+          </div>
+
+          <div>
+            <label style="font-weight: 700;">Line Height (Leading): <span id="leadingReadout">1.6</span></label>
+            <input type="range" id="leadingSlider" min="1.0" max="2.2" step="0.1" value="1.6" style="width: 100%;" />
+          </div>
+        </div>
+
+        <div id="typeSpecimen" style="background: #FAF8F5; border: 2px solid var(--border-dark); border-radius: var(--radius-md); padding: 2rem; transition: all 0.25s ease;">
+          <h2 id="specimenHeading" style="font-size: 38px; margin-bottom: 0.75rem; transition: all 0.25s ease;">Good typography is invisible until it's bad.</h2>
+          <p id="specimenBody" style="font-size: 1.05rem; line-height: 1.6; color: var(--text-muted); transition: all 0.25s ease;">
+            Pairing a distinctive display font with a clean, neutral body typeface creates clear visual hierarchy. Notice how adjusting line height gives paragraphs breathing room and improves scanability.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.25rem; border-top: 2px solid var(--border-subtle);">
+        <a href="colour.html" class="btn" style="background: #FFF;">← Previous: Colour</a>
+        <a href="layout.html" class="btn btn-mint">Next: Layout & Grids →</a>
+      </div>
+    </div>
+
+    <section class="workspace-panel reveal">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--lavender-bg);">Typography Media & Videos</span>
+          <h2 style="margin-top: 0.35rem;">Aa Type Reference & YouTube Video Table</h2>
+        </div>
+      </div>
+
+      <div class="media-grid">
+        <div class="media-card">
+          <h3>Editorial & Display Backdrop</h3>
+          <div class="media-frame">
+            <img
+              src="https://drive.google.com/thumbnail?id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp&sz=w1000"
+              data-local="../assets/backgrounds/Background home.jpg"
+              data-fallback="https://drive.google.com/uc?export=view&id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp"
+              alt="Typography Visual Backdrop"
+            />
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Clean type pairing works best over calm, low-noise backgrounds.
+          </p>
+        </div>
+
+        <div class="media-card">
+          <h3 id="typoVideoTitle">Figma Typography Tutorial: Font Pairing, Styles, and Hierarchy</h3>
+          <div class="media-frame">
+            <iframe
+              id="typoYtFrame"
+              src="https://www.youtube.com/embed/KuqIBiin3Ys"
+              title="Typography YouTube Lesson"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Click a row below to switch the video lesson.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Compatible Page</th>
+              <th>YouTube Video</th>
+              <th>Typography Focus</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge-status" style="background: var(--lavender-bg);">typography.html</span></td>
+              <td><strong>Figma Typography Tutorial: Font Pairing, Styles, and Hierarchy</strong></td>
+              <td>Font pairing, scale & text styles</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setTypoVideo('https://www.youtube.com/embed/KuqIBiin3Ys', 'Figma Typography Tutorial: Font Pairing, Styles, and Hierarchy')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--pink-bg);">basics.html</span></td>
+              <td><strong>The FULL Guide To Visual Hierarchy</strong></td>
+              <td>Headline vs. body emphasis</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setTypoVideo('https://www.youtube.com/embed/5yjYe9aDSBM', 'The FULL Guide To Visual Hierarchy')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--mint-bg);">layout.html</span></td>
+              <td><strong>White Space in Graphic Design: Make Your Designs Look Clean</strong></td>
+              <td>Line spacing & readable margins</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setTypoVideo('https://www.youtube.com/embed/Q5n0H-nHNKs', 'White Space in Graphic Design: Make Your Designs Look Clean')">▶ Play</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/typography.js"></script>
+  <script>
+    function setTypoVideo(embedUrl, title) {
+      document.getElementById('typoYtFrame').src = embedUrl;
+      document.getElementById('typoVideoTitle').textContent = title;
+      Design101.pipSay(`Playing "${title}"!`);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+/* =========================================
+   DESIGN101 - RESPONSIVE BREAKPOINTS
+   ========================================= */
+@media (max-width: 960px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+  .split-studio { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 640px) {
+  .navbar { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.65rem; }
+  .brand-logo-img { height: 36px; }
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+  .bento-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.85rem; }
+  .paint-mascot-wrap { bottom: 14px; left: 14px; }
+  .paint-mascot-btn { width: 64px; height: 64px; }
+  .paint-speech { max-width: 175px; font-size: 0.78rem; }
+  .clay-item { transform: scale(0.72); }
+}

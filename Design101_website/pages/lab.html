@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Lab — Design101!</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .poster-stage {
+      aspect-ratio: 4 / 5;
+      max-width: 420px;
+      margin: 0 auto;
+      border: 3px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 0 var(--border-dark);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.35s var(--bounce);
+      position: relative;
+    }
+    .poster-sticker {
+      font-size: 3.5rem;
+      align-self: flex-end;
+      animation: floatSparkle 3s ease-in-out infinite;
+    }
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .media-card {
+      background: #FAF8F5;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-tactile);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .media-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      border: 2px solid var(--border-dark);
+      overflow: hidden;
+      background: var(--yellow-bg);
+    }
+    .media-frame img,
+    .media-frame iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 0;
+      display: block;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: #FFF;
+    }
+    .design-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .design-table th,
+    .design-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .design-table th {
+      background: var(--yellow-bg);
+      font-family: 'Fredoka', sans-serif;
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--border-dark);
+    }
+    .design-table tr:last-child td { border-bottom: none; }
+    @media (max-width: 768px) { .media-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="brand-logo" aria-label="Design101 Home">
+      <img
+        src="https://drive.google.com/thumbnail?id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN&sz=w400"
+        data-local="../assets/Logo Design101.jpeg"
+        data-fallback="https://drive.google.com/uc?export=view&id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN"
+        alt="Design101 Logo"
+        class="brand-logo-img"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="colour.html">Colour</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      <li><a href="layout.html">Layout</a></li>
+      <li><a href="lab.html" class="active">Design Lab</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+    </ul>
+    <div class="nav-progress-pill">
+      <span>⭐</span>
+      <span><span id="completedCount">0</span>/4 Lessons</span>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="workspace-panel reveal">
+      <div class="section-header">
+        <h1>🧪 Design Lab Poster Studio</h1>
+        <span class="badge-status" style="background: var(--yellow-bg);">Interactive Workspace</span>
+      </div>
+
+      <div class="split-studio" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <label style="font-weight: 700;">Poster Headline</label>
+          <input type="text" id="posterTitleInput" value="BIG CREATIVITY 2026" class="btn" style="background: #FFF; text-align: left; cursor: text;" />
+
+          <label style="font-weight: 700;">Subtitle</label>
+          <input type="text" id="posterSubInput" value="Design101 Annual Exhibition" class="btn" style="background: #FFF; text-align: left; cursor: text;" />
+
+          <label style="font-weight: 700;">Canvas Background (Saved Palette + Presets)</label>
+          <div id="labPaletteButtons" style="display: flex; flex-wrap: wrap; gap: 0.6rem;"></div>
+
+          <label style="font-weight: 700;">Sticker Accent</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-yellow sticker-pick" data-emoji="🎨">🎨</button>
+            <button type="button" class="btn btn-pink sticker-pick" data-emoji="✨">✨</button>
+            <button type="button" class="btn btn-mint sticker-pick" data-emoji="🚀">🚀</button>
+            <button type="button" class="btn btn-primary sticker-pick" data-emoji="🏆">🏆</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="poster-stage" id="posterCanvas" style="background: var(--pink-bg);">
+            <div>
+              <span class="badge-status">DESIGN101 STUDIO</span>
+              <h2 id="posterTitlePreview" style="font-size: 2.4rem; line-height: 1.1; margin-top: 1rem;">BIG CREATIVITY 2026</h2>
+              <p id="posterSubPreview" style="margin-top: 0.75rem; font-weight: 600;">Design101 Annual Exhibition</p>
+            </div>
+            <div class="poster-sticker" id="posterStickerPreview">🎨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="workspace-panel reveal">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--yellow-bg);">Poster Studio Media & Videos</span>
+          <h2 style="margin-top: 0.35rem;">🧪 Studio Inspiration & YouTube Video Table</h2>
+        </div>
+      </div>
+
+      <div class="media-grid">
+        <div class="media-card">
+          <h3>Poster Style Inspiration</h3>
+          <div class="media-frame">
+            <img
+              src="https://drive.google.com/thumbnail?id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp&sz=w1000"
+              data-local="../assets/backgrounds/Background home.jpg"
+              data-fallback="https://drive.google.com/uc?export=view&id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp"
+              alt="Design Lab Poster Inspiration"
+            />
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Combine bold headlines, clean spacing, and your saved palette swatches.
+          </p>
+        </div>
+
+        <div class="media-card">
+          <h3 id="labVideoTitle">The FULL Guide To Visual Hierarchy</h3>
+          <div class="media-frame">
+            <iframe
+              id="labYtFrame"
+              src="https://www.youtube.com/embed/5yjYe9aDSBM"
+              title="Design Lab YouTube Guide"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Pick any compatible lesson video below while designing your poster.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Compatible Page</th>
+              <th>YouTube Video</th>
+              <th>Poster Application</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge-status" style="background: var(--pink-bg);">basics.html</span></td>
+              <td><strong>The FULL Guide To Visual Hierarchy</strong></td>
+              <td>Making poster headlines pop</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setLabVideo('https://www.youtube.com/embed/5yjYe9aDSBM', 'The FULL Guide To Visual Hierarchy')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--blue-bg);">colour.html</span></td>
+              <td><strong>Choosing Colors with Color Harmonies & the Color Wheel</strong></td>
+              <td>Choosing cohesive canvas & accent colours</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setLabVideo('https://www.youtube.com/embed/HjjIX1m_pGU', 'Choosing Colors with Color Harmonies & the Color Wheel')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--lavender-bg);">typography.html</span></td>
+              <td><strong>Figma Typography Tutorial: Font Pairing, Styles, and Hierarchy</strong></td>
+              <td>Pairing title & subtitle type</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setLabVideo('https://www.youtube.com/embed/KuqIBiin3Ys', 'Figma Typography Tutorial: Font Pairing, Styles, and Hierarchy')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--mint-bg);">layout.html</span></td>
+              <td><strong>Graphic Design Layout Tips: How to Use Grid Systems Like a Pro</strong></td>
+              <td>Framing stickers & text cleanly</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setLabVideo('https://www.youtube.com/embed/CjyG_7DTuEE', 'Graphic Design Layout Tips: How to Use Grid Systems Like a Pro')">▶ Play</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    const state = Design101.getState();
+    const paletteBtns = document.getElementById('labPaletteButtons');
+    const posterCanvas = document.getElementById('posterCanvas');
+
+    const swatches = Array.from(new Set([...state.savedPalette, '#FAD2E1', '#BEE1E6', '#FFF1C1', '#D8F3DC']));
+    swatches.forEach(hex => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn';
+      btn.title = hex;
+      btn.style.background = hex;
+      btn.style.width = '42px';
+      btn.style.height = '42px';
+      btn.style.padding = '0';
+      btn.onclick = () => {
+        posterCanvas.style.background = hex;
+        Design101.pipSay(`Switched canvas to ${hex}!`);
+      };
+      paletteBtns.appendChild(btn);
+    });
+
+    document.getElementById('posterTitleInput').addEventListener('input', e => {
+      document.getElementById('posterTitlePreview').textContent = e.target.value || 'Untitled Poster';
+    });
+
+    document.getElementById('posterSubInput').addEventListener('input', e => {
+      document.getElementById('posterSubPreview').textContent = e.target.value;
+    });
+
+    document.querySelectorAll('.sticker-pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('posterStickerPreview').textContent = btn.dataset.emoji;
+        Design101.pipSay(`Added ${btn.dataset.emoji} to your poster!`);
+      });
+    });
+
+    function setLabVideo(embedUrl, title) {
+      document.getElementById('labYtFrame').src = embedUrl;
+      document.getElementById('labVideoTitle').textContent = title;
+      Design101.pipSay(`Playing "${title}"!`);
+    }
+  </script>
+</body>
+</html>

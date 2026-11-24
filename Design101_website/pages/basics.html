@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Basics — Design101!</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .lesson-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .mini-card {
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-dark);
+      box-shadow: var(--shadow-tactile);
+      transition: transform 0.25s var(--bounce);
+    }
+    .mini-card:hover { transform: translateY(-4px); }
+    .mini-card.current { outline: 3px solid var(--purple-accent); outline-offset: 2px; }
+
+    .demo-stage {
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      margin: 1.25rem 0;
+      transition: all 0.4s var(--bounce);
+    }
+    .demo-stage.bad-design {
+      background: #FF595E;
+      color: #FFCA3A;
+      text-align: center;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      letter-spacing: 1.5px;
+      border-style: dashed;
+      transform: rotate(-0.8deg);
+    }
+    .demo-stage.bad-design p {
+      margin: 0.45rem auto 0;
+    }
+    .demo-stage.good-design {
+      background: var(--pink-bg);
+      color: var(--text-dark);
+      text-align: left;
+      letter-spacing: normal;
+      border-style: solid;
+      transform: rotate(0deg);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .demo-stage.good-design p {
+      margin: 0;
+    }
+
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .principle-box {
+      background: #FAF8F5;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      transition: transform 0.25s var(--bounce);
+    }
+    .principle-box:hover { transform: translateY(-4px); }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .media-card {
+      background: #FAF8F5;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-tactile);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .media-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      border: 2px solid var(--border-dark);
+      overflow: hidden;
+      background: var(--pink-bg);
+    }
+    .media-frame img,
+    .media-frame iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 0;
+      display: block;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: #FFF;
+    }
+    .design-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .design-table th,
+    .design-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .design-table th {
+      background: var(--pink-bg);
+      font-family: 'Fredoka', sans-serif;
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--border-dark);
+    }
+    .design-table tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 768px) {
+      .lesson-strip, .principle-grid, .media-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .lesson-strip, .principle-grid, .media-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="brand-logo" aria-label="Design101 Home">
+      <img
+        src="https://drive.google.com/thumbnail?id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN&sz=w400"
+        data-local="../assets/Logo Design101.jpeg"
+        data-fallback="https://drive.google.com/uc?export=view&id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN"
+        alt="Design101 Logo"
+        class="brand-logo-img"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="basics.html" class="active">Basics</a></li>
+      <li><a href="colour.html">Colour</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      <li><a href="layout.html">Layout</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+    </ul>
+    <div class="nav-progress-pill">
+      <span>⭐</span>
+      <span><span id="completedCount">0</span>/4 Lessons</span>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="lesson-strip reveal">
+      <a href="basics.html" class="mini-card card-pink current">
+        <strong>1. Design Basics</strong>
+        <div style="font-size: 0.8rem; margin-top: 0.25rem;">Active Lesson</div>
+      </a>
+      <a href="colour.html" class="mini-card card-blue">
+        <strong>2. Colour Theory</strong>
+        <div style="font-size: 0.8rem; margin-top: 0.25rem;">Next Up →</div>
+      </a>
+      <a href="typography.html" class="mini-card card-white">
+        <strong>3. Typography</strong>
+        <div style="font-size: 0.8rem; margin-top: 0.25rem;">Fonts & Scale</div>
+      </a>
+      <a href="layout.html" class="mini-card card-mint">
+        <strong>4. Layout</strong>
+        <div style="font-size: 0.8rem; margin-top: 0.25rem;">Grids & Space</div>
+      </a>
+    </section>
+
+    <section class="workspace-panel reveal">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--pink-bg);">Lesson 1 of 4</span>
+          <h1 style="margin-top: 0.4rem;">Design Basics & Principles</h1>
+        </div>
+        <button type="button" class="btn btn-mint" id="completeBasicsBtn">✓ Mark Lesson Complete</button>
+      </div>
+
+      <p>
+        Graphic design is visual communication. By combining <strong>Contrast</strong>, <strong>Visual Hierarchy</strong>, and <strong>Alignment</strong>, you guide the viewer's eye smoothly through your composition.
+      </p>
+
+      <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
+        <button type="button" class="btn btn-primary" id="toggleDesignBtn">✨ Fix This Cluttered Poster</button>
+        <span id="stateBadge" class="badge-status" style="background: #FFE5E5;">Current: Poor Hierarchy & Low Contrast</span>
+      </div>
+
+      <div class="demo-stage bad-design" id="posterDemo">
+        <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Design101 Community Event</span>
+        <h2 style="font-size: 2.1rem; line-height: 1.15;">Creative Poster Jam 2026</h2>
+        <p style="max-width: 540px;">Join fellow designers this Saturday at 10:00 AM for hands-on visual hierarchy exercises and live feedback.</p>
+        <div style="margin-top: 0.85rem;"><span class="btn btn-yellow" style="cursor: default;">Reserve Free Seat →</span></div>
+      </div>
+
+      <div class="principle-grid">
+        <div class="principle-box">
+          <h3>1. Contrast</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Dark text on a soft pastel background ensures effortless legibility compared to clashing neon tones.
+          </p>
+        </div>
+        <div class="principle-box">
+          <h3>2. Hierarchy</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Size and weight separate the main headline from supporting details and the call-to-action button.
+          </p>
+        </div>
+        <div class="principle-box">
+          <h3>3. Alignment</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.35rem;">
+            Consistent left alignment creates a clean invisible edge that anchors the eye naturally.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1.25rem; border-top: 2px solid var(--border-subtle);">
+        <a href="../index.html" class="btn" style="background: #FFF;">← Back to Home</a>
+        <a href="colour.html" class="btn btn-pink">Next: Colour Theory →</a>
+      </div>
+    </section>
+
+    <section class="workspace-panel reveal">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--pink-bg);">Basics Media & Videos</span>
+          <h2 style="margin-top: 0.35rem;">🖼️ Visual Reference & YouTube Video Table</h2>
+        </div>
+      </div>
+
+      <div class="media-grid">
+        <div class="media-card">
+          <h3>Hierarchy & Contrast Moodboard</h3>
+          <div class="media-frame">
+            <img
+              src="https://drive.google.com/thumbnail?id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp&sz=w1000"
+              data-local="../assets/backgrounds/Background home.jpg"
+              data-fallback="https://drive.google.com/uc?export=view&id=1KhvCekaTH-FqHnG8ABnXR4pxq7Oqnsbp"
+              alt="Design Basics Visual Reference"
+            />
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Soft pastel tones and clean spacing keep focal elements easy to scan.
+          </p>
+        </div>
+
+        <div class="media-card">
+          <h3 id="basicsVideoTitle">The FULL Guide To Visual Hierarchy</h3>
+          <div class="media-frame">
+            <iframe
+              id="basicsYtFrame"
+              src="https://www.youtube.com/embed/5yjYe9aDSBM"
+              title="Design Basics YouTube Guide"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Select any row in the table below to switch the video above.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Compatible Page</th>
+              <th>YouTube Video</th>
+              <th>Basics Focus</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge-status" style="background: var(--pink-bg);">basics.html</span></td>
+              <td><strong>The FULL Guide To Visual Hierarchy</strong></td>
+              <td>Scale, contrast & eye flow</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setBasicsVideo('https://www.youtube.com/embed/5yjYe9aDSBM', 'The FULL Guide To Visual Hierarchy')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--mint-bg);">layout.html</span></td>
+              <td><strong>White Space in Graphic Design: Make Your Designs Look Clean</strong></td>
+              <td>Clean spacing & breathing room</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setBasicsVideo('https://www.youtube.com/embed/Q5n0H-nHNKs', 'White Space in Graphic Design: Make Your Designs Look Clean')">▶ Play</button></td>
+            </tr>
+            <tr>
+              <td><span class="badge-status" style="background: var(--blue-bg);">colour.html</span></td>
+              <td><strong>Choosing Colors with Color Harmonies & the Color Wheel</strong></td>
+              <td>Color contrast & balance</td>
+              <td><button type="button" class="btn btn-yellow" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="setBasicsVideo('https://www.youtube.com/embed/HjjIX1m_pGU', 'Choosing Colors with Color Harmonies & the Color Wheel')">▶ Play</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script>
+    const toggleBtn = document.getElementById('toggleDesignBtn');
+    const posterDemo = document.getElementById('posterDemo');
+    const stateBadge = document.getElementById('stateBadge');
+    const completeBtn = document.getElementById('completeBasicsBtn');
+
+    toggleBtn.addEventListener('click', () => {
+      const isBad = posterDemo.classList.contains('bad-design');
+      posterDemo.classList.toggle('bad-design', !isBad);
+      posterDemo.classList.toggle('good-design', isBad);
+      if (isBad) {
+        toggleBtn.textContent = '🔄 Revert to Cluttered Poster';
+        stateBadge.textContent = 'Current: Clean Hierarchy & Strong Contrast';
+        stateBadge.style.background = '#D8F3DC';
+        Design101.pipSay("Ooh, so clean and easy to read!");
+      } else {
+        toggleBtn.textContent = '✨ Fix This Cluttered Poster';
+        stateBadge.textContent = 'Current: Poor Hierarchy & Low Contrast';
+        stateBadge.style.background = '#FFE5E5';
+        Design101.pipSay("Yikes! Tap the button to fix that contrast!");
+      }
+    });
+
+    completeBtn.addEventListener('click', () => {
+      Design101.markLessonComplete('basics');
+      completeBtn.textContent = '✓ Completed!';
+    });
+
+    function setBasicsVideo(embedUrl, title) {
+      document.getElementById('basicsYtFrame').src = embedUrl;
+      document.getElementById('basicsVideoTitle').textContent = title;
+      Design101.pipSay(`Playing "${title}"!`);
+    }
+  </script>
+</body>
+</html>
