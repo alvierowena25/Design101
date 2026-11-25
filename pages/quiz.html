@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz & Feedback — Design101!</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .quiz-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0.75rem;
+      background: #FFF;
+    }
+    .quiz-option.selected {
+      background: var(--lavender-bg);
+      border-color: var(--purple-accent);
+    }
+    .score-hero-card {
+      background: var(--yellow-bg);
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      text-align: center;
+      box-shadow: var(--shadow-tactile);
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .review-card {
+      background: #FAF8F5;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      box-shadow: var(--shadow-tactile);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .review-quote {
+      font-size: 0.92rem;
+      color: var(--text-dark);
+    }
+    .review-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding-top: 0.5rem;
+      border-top: 1.5px solid var(--border-subtle);
+    }
+    .feedback-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .form-field.full-span {
+      grid-column: 1 / -1;
+    }
+    .form-field label {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.7rem 0.95rem;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: #FFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+    .form-control:focus {
+      outline: 3px solid var(--lavender-bg);
+      border-color: var(--purple-accent);
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+      border: 2px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      background: #FFF;
+    }
+    .design-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .design-table th,
+    .design-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border-subtle);
+    }
+    .design-table th {
+      background: var(--lavender-bg);
+      font-family: 'Fredoka', sans-serif;
+      color: var(--text-dark);
+      border-bottom: 2px solid var(--border-dark);
+    }
+    .design-table tr:last-child td { border-bottom: none; }
+    @media (max-width: 900px) {
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .feedback-form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="brand-logo" aria-label="Design101 Home">
+      <img
+        src="https://drive.google.com/thumbnail?id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN&sz=w400"
+        data-local="../assets/Logo Design101.jpeg"
+        data-fallback="https://drive.google.com/uc?export=view&id=1shzBzU8owKcI-NVXRPeTTuBjo9nml9BN"
+        alt="Design101 Logo"
+        class="brand-logo-img"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="basics.html">Basics</a></li>
+      <li><a href="colour.html">Colour</a></li>
+      <li><a href="typography.html">Typography</a></li>
+      <li><a href="layout.html">Layout</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="quiz.html" class="active">Quiz</a></li>
+    </ul>
+    <div class="nav-progress-pill">
+      <span>⭐</span>
+      <span><span id="completedCount">0</span>/4 Lessons</span>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Quiz Section -->
+    <div class="workspace-panel reveal" id="quizSection">
+      <div class="section-header">
+        <h1>🏆 Quiz & Learning Feedback</h1>
+        <span class="badge-status" style="background: var(--lavender-bg);" id="questionCounter">Question 1 of 3</span>
+      </div>
+      <h3 id="questionText" style="margin-bottom: 1.25rem;"></h3>
+      <div id="optionsContainer"></div>
+      <button type="button" class="btn btn-primary" id="nextQuestionBtn" style="margin-top: 0.75rem;">Submit Answer →</button>
+    </div>
+
+    <!-- Quiz Results Dashboard -->
+    <div class="workspace-panel reveal" id="feedbackDashboard" style="display: none;">
+      <div class="section-header">
+        <h1>📊 Learning Feedback Dashboard</h1>
+        <button type="button" class="btn btn-yellow" id="retakeQuizBtn">🔄 Retake Quiz</button>
+      </div>
+
+      <div class="split-studio" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.75rem; align-items: start;">
+        <div>
+          <div class="score-hero-card">
+            <span class="badge-status">OVERALL MASTERY & SCORE</span>
+            <div style="font-family: 'Fredoka', sans-serif; font-size: 3.5rem; font-weight: 700; margin: 0.5rem 0;">
+              🏆 <span id="finalScoreText">94</span>/100
+            </div>
+            <p style="font-size: 0.9rem; font-weight: 600;">Great visual instincts! Keep exploring in Design Lab.</p>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="meter-row">
+              <div class="meter-label"><span>ACCURACY</span><span id="accLabel">100%</span></div>
+              <div class="meter-track"><div class="meter-fill" id="accBar" style="background: var(--pink-accent);"></div></div>
+            </div>
+            <div class="meter-row">
+              <div class="meter-label"><span>SPEED</span><span>90%</span></div>
+              <div class="meter-track"><div class="meter-fill" id="spdBar" style="background: var(--blue-accent);"></div></div>
+            </div>
+            <div class="meter-row">
+              <div class="meter-label"><span>CONCEPT</span><span id="conLabel">100%</span></div>
+              <div class="meter-track"><div class="meter-fill" id="conBar" style="background: var(--mint-accent);"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #FAF8F5; border: 2px solid var(--border-dark); border-radius: var(--radius-md); padding: 1.5rem;">
+          <h3 style="margin-bottom: 0.75rem;">💡 Helpful Tips & Suggestions</h3>
+          <ul style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.65rem; color: var(--text-muted);">
+            <li><strong>Visual Hierarchy:</strong> Establish a clear focal point using scale and contrast before adding extra details.</li>
+            <li><strong>Colour Harmony:</strong> Test foreground and background pairs in Colour Theory to keep text legible.</li>
+            <li><strong>Whitespace:</strong> Generous grid spacing makes layouts feel intentional rather than crowded.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learner Reviews Section -->
+    <section class="workspace-panel reveal" id="reviewsSection">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--mint-bg);">Community Highlights</span>
+          <h2 style="margin-top: 0.35rem;">⭐ Learner Reviews</h2>
+        </div>
+        <span class="badge-status" style="background: var(--yellow-bg);">4.9 / 5 Average</span>
+      </div>
+
+      <div class="reviews-grid" id="reviewsCardsGrid">
+        <article class="review-card">
+          <p class="review-quote">"Fixing the cluttered poster in Design Basics made contrast and visual hierarchy click right away!"</p>
+          <div class="review-meta">
+            <span>hana.creates</span>
+            <span class="badge-status" style="background: var(--pink-bg);">⭐⭐⭐⭐⭐</span>
+          </div>
+        </article>
+
+        <article class="review-card">
+          <p class="review-quote">"Generating colour harmonies and jumping straight into Design Lab with my saved swatches feels super smooth."</p>
+          <div class="review-meta">
+            <span>tariq_ui</span>
+            <span class="badge-status" style="background: var(--blue-bg);">⭐⭐⭐⭐⭐</span>
+          </div>
+        </article>
+
+        <article class="review-card">
+          <p class="review-quote">"Tweaking line height and column gaps live makes layout rules way easier to remember than reading walls of text."</p>
+          <div class="review-meta">
+            <span>mei.ling</span>
+            <span class="badge-status" style="background: var(--mint-bg);">⭐⭐⭐⭐☆</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Feedback Form Section -->
+    <section class="workspace-panel reveal" id="feedbackFormSection">
+      <div class="section-header">
+        <div>
+          <span class="badge-status" style="background: var(--pink-bg);">Share Your Thoughts</span>
+          <h2 style="margin-top: 0.35rem;">💬 Learner Feedback & Review Form</h2>
+        </div>
+      </div>
+      <p style="color: var(--text-muted);">
+        Submit your feedback or review below—it saves to your browser and updates both the <strong>Learner Reviews</strong> cards and the <strong>Submitted Feedback Log</strong> table.
+      </p>
+
+      <form id="learnerFeedbackForm" class="feedback-form-grid">
+        <div class="form-field">
+          <label for="learnerName">Your Name (or Nickname)</label>
+          <input type="text" id="learnerName" class="form-control" placeholder="e.g. Alvirah" required />
+        </div>
+
+        <div class="form-field">
+          <label for="favoriteModule">Favourite Module</label>
+          <select id="favoriteModule" class="form-control">
+            <option value="Design Basics">1. Design Basics</option>
+            <option value="Colour Theory">2. Colour Theory</option>
+            <option value="Typography">3. Typography</option>
+            <option value="Layout & Grids">4. Layout & Grids</option>
+            <option value="Design Lab">Design Lab Studio</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="ratingSelect">Experience Rating</label>
+          <select id="ratingSelect" class="form-control">
+            <option value="⭐⭐⭐⭐⭐ (5/5)">⭐⭐⭐⭐⭐ (5/5 — Loved it!)</option>
+            <option value="⭐⭐⭐⭐☆ (4/5)">⭐⭐⭐⭐☆ (4/5 — Great)</option>
+            <option value="⭐⭐⭐☆☆ (3/5)">⭐⭐⭐☆☆ (3/5 — Good)</option>
+            <option value="⭐⭐☆☆☆ (2/5)">⭐⭐☆☆☆ (2/5 — Needs work)</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="confidenceLevel">Design Confidence After Lessons</label>
+          <select id="confidenceLevel" class="form-control">
+            <option value="High">High — Ready to design</option>
+            <option value="Growing">Growing — Getting the hang of it</option>
+            <option value="Beginner">Beginner — Still practising</option>
+          </select>
+        </div>
+
+        <div class="form-field full-span">
+          <label for="feedbackMessage">Feedback or Review Comment</label>
+          <textarea id="feedbackMessage" rows="3" class="form-control" placeholder="Tell Pip what clicked for you or what could be improved..." required></textarea>
+        </div>
+
+        <div class="form-field full-span" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+          <button type="submit" class="btn btn-primary">Submit Feedback ✓</button>
+          <button type="button" class="btn" style="background: #FFF;" id="clearFeedbackBtn">Clear Saved Notes</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Feedback & Lesson Progress Tables -->
+    <section class="workspace-panel reveal">
+      <div class="section-header">
+        <h2>📋 Submitted Feedback Log</h2>
+        <span class="badge-status" style="background: var(--yellow-bg);" id="feedbackCountBadge">0 Entries</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="design-table" id="feedbackTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Favourite Module</th>
+              <th>Rating</th>
+              <th>Confidence</th>
+              <th>Review / Comment</th>
+            </tr>
+          </thead>
+          <tbody id="feedbackTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted);">No feedback submitted yet—fill out the form above!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top: 1.75rem;">📚 Lesson Progress Overview</h3>
+      <div class="table-wrap">
+        <table class="design-table">
+          <thead>
+            <tr>
+              <th>Lesson</th>
+              <th>Core Focus</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="lessonProgressTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script>
+    const FEEDBACK_STORAGE_KEY = 'design101_feedback_entries';
+
+    function getFeedbackEntries() {
+      try {
+        return JSON.parse(localStorage.getItem(FEEDBACK_STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFeedbackEntries(entries) {
+      localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function renderFeedbackTable() {
+      const entries = getFeedbackEntries();
+      const tbody = document.getElementById('feedbackTableBody');
+      const badge = document.getElementById('feedbackCountBadge');
+      badge.textContent = `${entries.length} ${entries.length === 1 ? 'Entry' : 'Entries'}`;
+
+      if (!entries.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; color: var(--text-muted);">
+              No feedback submitted yet—fill out the form above!
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = entries.map(item => `
+        <tr>
+          <td><strong>${escapeHtml(item.name)}</strong></td>
+          <td>${escapeHtml(item.module)}</td>
+          <td>${escapeHtml(item.rating)}</td>
+          <td>${escapeHtml(item.confidence)}</td>
+          <td>${escapeHtml(item.comment)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function appendReviewCard(item) {
+      const grid = document.getElementById('reviewsCardsGrid');
+      if (!grid) return;
+      const starShort = item.rating.split(' ')[0] || '⭐⭐⭐⭐⭐';
+      const card = document.createElement('article');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <p class="review-quote">"${escapeHtml(item.comment)}"</p>
+        <div class="review-meta">
+          <span>${escapeHtml(item.name)}</span>
+          <span class="badge-status" style="background: var(--lavender-bg);">${escapeHtml(starShort)}</span>
+        </div>
+      `;
+      grid.prepend(card);
+    }
+
+    function renderLessonTable() {
+      const state = Design101.getState();
+      const lessons = [
+        { key: 'basics', title: '1. Design Basics', focus: 'Contrast, hierarchy, alignment' },
+        { key: 'colour', title: '2. Colour Theory', focus: 'Harmonies, hues, swatches' },
+        { key: 'typography', title: '3. Typography', focus: 'Font pairing, scale, leading' },
+        { key: 'layout', title: '4. Layout & Grids', focus: 'Columns, guides, whitespace' }
+      ];
+      const tbody = document.getElementById('lessonProgressTableBody');
+      tbody.innerHTML = lessons.map(l => {
+        const done = Boolean(state.completed?.[l.key]);
+        return `
+          <tr>
+            <td><strong>${l.title}</strong></td>
+            <td>${l.focus}</td>
+            <td>
+              <span class="badge-status" style="background: ${done ? 'var(--mint-bg)' : '#FAF8F5'};">
+                ${done ? '✓ Completed' : 'In Progress'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    document.getElementById('learnerFeedbackForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('learnerName').value.trim();
+      const moduleName = document.getElementById('favoriteModule').value;
+      const rating = document.getElementById('ratingSelect').value;
+      const confidence = document.getElementById('confidenceLevel').value;
+      const comment = document.getElementById('feedbackMessage').value.trim();
+
+      if (!name || !comment) return;
+
+      const entry = { name, module: moduleName, rating, confidence, comment };
+      const entries = getFeedbackEntries();
+      entries.unshift(entry);
+      saveFeedbackEntries(entries);
+      renderFeedbackTable();
+      appendReviewCard(entry);
+
+      e.target.reset();
+      Design101.showToast('💬 Thanks! Your feedback & review have been saved.');
+      Design101.pipSay(`Thanks for the review, ${name}! 🎨`);
+    });
+
+    document.getElementById('clearFeedbackBtn')?.addEventListener('click', () => {
+      saveFeedbackEntries([]);
+      renderFeedbackTable();
+      Design101.showToast('🗑️ Cleared saved feedback notes.');
+    });
+
+    document.getElementById('retakeQuizBtn')?.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    getFeedbackEntries().slice().reverse().forEach(appendReviewCard);
+    renderFeedbackTable();
+    renderLessonTable();
+  </script>
+</body>
+</html>
